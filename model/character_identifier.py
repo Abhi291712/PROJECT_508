@@ -1,8 +1,6 @@
-character_identifier.py
-
 from typing import Dict, Optional
-from .lexical_entry import LexicalEntry
-from .common_enums import CharacterType, Translation
+from model.common_enums import CharacterType
+from model.lexical_entry import LexicalEntry, Translation
 
 class CharacterIdentifier:
     def __init__(self):
