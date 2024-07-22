@@ -10,6 +10,10 @@ class WordTransliterator:
         }
 
     def transliterate(self, word: str) -> Optional[str]:
-        if not all(char in self.transliteration_map for char in word):
-            return None
-        return ''.join(self.transliteration_map.get(char, char) for char in word)
+        transliterated_chars = []
+        for char in word:
+            if char in self.transliteration_map:
+                transliterated_chars.append(self.transliteration_map[char])
+            else:
+                return None  # Return None if any character is not in the transliteration map
+        return ''.join(transliterated_chars)
