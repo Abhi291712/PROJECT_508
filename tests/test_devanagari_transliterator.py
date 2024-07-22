@@ -1,24 +1,26 @@
 import unittest
-from model.devanagari_analyzer import WordTransliterator
+from model.word_transliterator import WordTransliterator
 
 class TestWordTransliterator(unittest.TestCase):
-
+    
     def setUp(self):
         self.transliterator = WordTransliterator()
-
+    
     def test_transliterate_valid_word(self):
-        # Test that a valid Devanagari word is correctly transliterated
-        word = "अआइ"
-        expected_transliteration = "aāi"
-        result = self.transliterator.transliterate(word)
-        self.assertEqual(result, expected_transliteration)
-
-    def test_transliterate_invalid_word(self):
-        # Test that a word containing unknown characters returns None
-        word = "अॠइ"  # Assuming "ॠ" is not in the transliteration map
-        result = self.transliterator.transliterate(word)
+        result = self.transliterator.transliterate("अआइ")
+        self.assertEqual(result, "aāi")
+    
+    def test_transliterate_partial_valid_word(self):
+        result = self.transliterator.transliterate("अआइअ")
+        self.assertIsNone(result)
+    
+    def test_transliterate_empty_word(self):
+        result = self.transliterator.transliterate("")
+        self.assertEqual(result, "")
+    
+    def test_transliterate_invalid_character(self):
+        result = self.transliterator.transliterate("अx")
         self.assertIsNone(result)
 
 if __name__ == '__main__':
     unittest.main()
-
