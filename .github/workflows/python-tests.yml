@@ -17,9 +17,11 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install -r requirements.txt
+        pip install -r requirement.txt
         pip install pytest
 
     - name: Run tests
+      env:
+        PYTHONPATH: ${{ github.workspace }}
       run: |
         pytest
