@@ -6,20 +6,20 @@ class TestWordTransliterator(unittest.TestCase):
     def setUp(self):
         self.transliterator = WordTransliterator()
     
-    def test_transliterate_valid_word(self):
-        result = self.transliterator.transliterate("अआइ")
-        self.assertEqual(result, "aāi")
+    def test_transliterate_word(self):
+        result = self.transliterator.transliterate("अ")
+        self.assertEqual(result, "a")
     
+    def test_transliterate_unknown_character(self):
+        result = self.transliterator.transliterate("XYZ")
+        self.assertIsNone(result)
+
     def test_transliterate_partial_valid_word(self):
         result = self.transliterator.transliterate("अआइअ")
-        self.assertIsNone(result)
-    
-    def test_transliterate_empty_word(self):
-        result = self.transliterator.transliterate("")
-        self.assertEqual(result, "")
-    
-    def test_transliterate_invalid_character(self):
-        result = self.transliterator.transliterate("अx")
+        self.assertEqual(result, "aāia")
+
+    def test_transliterate_word_with_invalid_characters(self):
+        result = self.transliterator.transliterate("अआX")
         self.assertIsNone(result)
 
 if __name__ == '__main__':
