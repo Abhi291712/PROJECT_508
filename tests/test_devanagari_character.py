@@ -1,24 +1,25 @@
-
 import unittest
-from model.devanagari_analyzer import CharacterIdentifier, LexicalEntry, CharacterType
+from model.character_identifier import CharacterIdentifier
+from model.lexical_entry import LexicalEntry, Translation
+from model.common_enums import CharacterType
 
 class TestCharacterIdentifier(unittest.TestCase):
-
+    
     def setUp(self):
-        self.identifier = CharacterIdentifier()
-
-    def test_identify_valid_character(self):
-        # Test that a valid character returns the correct LexicalEntry
-        char = "अ"
-        expected_entry = LexicalEntry("अ", "a", CharacterType.VOWEL, "/ə/", 
-                                      Translation("a", "The first letter of the Devanagari script"))
-        result = self.identifier.identify(char)
-        self.assertEqual(result, expected_entry)
-
-    def test_identify_invalid_character(self):
-        # Test that an invalid character returns None
-        char = "ॠ"  # Assuming this character is not in char_info
-        result = self.identifier.identify(char)
+        self.char_identifier = CharacterIdentifier()
+    
+    def test_identify_existing_character(self):
+        result = self.char_identifier.identify("अ")
+        self.assertIsNotNone(result)
+        self.assertEqual(result.symbol, "अ")
+        self.assertEqual(result.name, "a")
+        self.assertEqual(result.type, CharacterType.VOWEL)
+        self.assertEqual(result.pronunciation, "/ə/")
+        self.assertEqual(result.translation.latin, "a")
+        self.assertEqual(result.translation.description, "The first letter of the Devanagari script")
+    
+    def test_identify_non_existing_character(self):
+        result = self.char_identifier.identify("ब")
         self.assertIsNone(result)
 
 if __name__ == '__main__':
