@@ -1,6 +1,6 @@
 import mysql.connector
 from typing import List, Optional
-from repository import Repository
+from db.repository import Repository
 from model.lexical_entry import LexicalEntry, Translation
 from model.common_enums import CharacterType
 
