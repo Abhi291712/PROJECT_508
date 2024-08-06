@@ -1,3 +1,4 @@
+# app/services.py
 from typing import Dict, Optional
 from db.mysql_repository import MySQLRepository
 from model.character_identifier import CharacterIdentifier
@@ -11,18 +12,18 @@ class Services:
 
     # Use case 1: the app takes a single Devanagari character and returns information about it
     def get_character_info(self, symbol: str) -> Dict[str, str]:
-        # Fetch character details from the repository
-        character_info = self.repo.get_character(symbol)
+        # Fetch character details from the character_identifier
+        character_info = self.character_identifier.identify_character(symbol)
 
-        if character_info:
+        if "error" not in character_info:
             return {
-                "iconic_symbol": character_info.symbol,
-                "name": character_info.name,
-                "type": character_info.type.name,
-                "pronunciation": character_info.pronunciation
+                "iconic_symbol": symbol,
+                "name": character_info["name"],
+                "type": character_info["type"],
+                "pronunciation": character_info["pronunciation"]
             }
         else:
-            return {"error": "Character not found"}
+            return character_info
 
     # Use case 2: the app takes a Devanagari word and returns its Latin script transliteration
     def transliterate_word(self, devanagari_word: str) -> Optional[str]:
