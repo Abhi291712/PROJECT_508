@@ -23,8 +23,8 @@ class MySQLRepository(Repository):
                 symbol=result['character'],
                 name=result['name'],
                 type=CharacterType[result['type']],
-                pronunciation='',  # Adjust as necessary if 'pronunciation' is part of your model
-                translation=Translation('', '')  # Adjust as necessary if 'translation' is part of your model
+                pronunciation='',  # Adjust as necessary
+                translation=Translation('', '')  # Adjust as necessary
             )
         return None
 
@@ -66,7 +66,9 @@ class MySQLRepository(Repository):
         self.cursor.execute(query, (word, transliteration))
         self.connection.commit()
 
-    def __del__(self):
-        if hasattr(self, 'connection') and self.connection.is_connected():
-            self.cursor.close()
-            self.connection.close()
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.cursor.close()
+        self.connection.close()
