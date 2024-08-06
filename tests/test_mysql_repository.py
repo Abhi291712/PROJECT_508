@@ -1,10 +1,16 @@
+import os
 import pytest
 from db.mysql_repository import MySQLRepository
 from model import LexicalEntry, CharacterType
 
 @pytest.fixture
 def repo():
-    with MySQLRepository(host='mysql', user='root', password='password', database='sanskrit') as repo:
+    host = os.getenv('DB_HOST', '127.0.0.1')
+    user = os.getenv('DB_USER', 'root')
+    password = os.getenv('DB_PASSWORD', 'root')
+    database = os.getenv('DB_NAME', 'devanagari')  # Changed to 'devanagari'
+    
+    with MySQLRepository(host=host, user=user, password=password, database=database) as repo:
         yield repo
 
 def test_add_and_get_character(repo):
