@@ -1,5 +1,5 @@
 from typing import Dict, Optional
-from db.mysql_repository import MysqlRepository
+from db.mysql_repository import MySQLRepository
 from model.character_identifier import CharacterIdentifier
 from model.word_transliterator import WordTransliterator
 
