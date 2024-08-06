@@ -1,5 +1,5 @@
 import pytest
-from mysql_repository import MySQLRepository
+from db.mysql_repository import MySQLRepository
 
 
 @pytest.fixture
