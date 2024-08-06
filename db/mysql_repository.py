@@ -1,6 +1,6 @@
 import mysql.connector
 from typing import Optional
-from .model import LexicalEntry, CharacterType
+from model import LexicalEntry, CharacterType  # Change from relative to absolute import
 
 class MySQLRepository:
     def __init__(self, host: str, user: str, password: str, database: str):
