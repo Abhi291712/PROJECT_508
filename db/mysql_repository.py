@@ -8,7 +8,7 @@ class MySQLRepository:
             host=host,
             user=user,
             password=password,
-            database=database
+            database= devanagari
         )
         self.cursor = self.connection.cursor(dictionary=True)
 
