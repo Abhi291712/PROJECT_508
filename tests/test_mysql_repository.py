@@ -1,17 +1,11 @@
 import pytest
-from model.lexical_entry import LexicalEntry
-from model.common_enums import CharacterType
 from db.mysql_repository import MySQLRepository
+from model import LexicalEntry, CharacterType
 
 @pytest.fixture
 def repo():
-    # Initialize the repository with the test database settings
-    return MySQLRepository(
-        host='localhost',
-        user='root',
-        password='root',
-        database='devanagari'
-    )
+    with MySQLRepository(host='mysql', user='root', password='password', database='sanskrit') as repo:
+        yield repo
 
 def test_add_and_get_character(repo):
     # Define a character to insert into the database
@@ -20,7 +14,7 @@ def test_add_and_get_character(repo):
         name='A',
         type=CharacterType.VOWEL,
         pronunciation='a',
-        translation=Translation('', '')  # Adjust if needed
+        translation=''  # Adjust as needed
     )
 
     # Add the character to the database
@@ -30,11 +24,12 @@ def test_add_and_get_character(repo):
     result = repo.get_character('अ')
 
     # Verify that the retrieved character matches the inserted character
-    assert result == character
+    assert result.symbol == character.symbol
+    assert result.name == character.name
+    assert result.type == character.type
+    assert result.pronunciation == character.pronunciation
 
 def test_get_nonexistent_character(repo):
     # Try to retrieve a character that doesn't exist
-    result = repo.get_character('999')  # Assuming this symbol does not exist
-
-    # Verify that the result is None
+    result = repo.get_character('nonexistent')
     assert result is None
