@@ -1,11 +1,18 @@
 import mysql.connector
-import os
 from typing import List, Optional
 from db.repository import Repository
 from model.lexical_entry import LexicalEntry, Translation
 from model.common_enums import CharacterType
 
-
+class MySQLRepository(Repository):
+    def __init__(self, host: str, user: str, password: str, database: str):
+        self.connection = mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database
+        )
+        self.cursor = self.connection.cursor(dictionary=True)
 
     def get_character(self, symbol: str) -> Optional[LexicalEntry]:
         query = "SELECT * FROM devanagari_characters WHERE character = %s"
