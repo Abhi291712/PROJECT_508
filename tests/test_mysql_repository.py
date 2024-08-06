@@ -1,9 +1,10 @@
 import pytest
-from db.mysql_repository import MySQLRepository
+from mysql_repository import MySQLRepository
 
 
 @pytest.fixture
 def repo():
+    # Initialize the repository with the test database settings
     return MySQLRepository(
         host='localhost',
         user='root',
@@ -13,25 +14,35 @@ def repo():
 
 
 def test_add_and_get_character(repo):
-    # Add a character
-    repo.add_character('न', 'Na', 'CONSONANT', 'na')
+    # Define a character to insert into the database
+    character = {
+        'id': 1,
+        'symbol': 'अ',
+        'name': 'A',
+        'type': 'Vowel',
+        'pronunciation': 'a'
+    }
 
-    # Retrieve the character
-    character = repo.get_character('न')
+    # Add the character to the database
+    repo.add_character(character)
 
-    # Check if the character is as expected
-    assert character is not None
-    assert character[1] == 'Na'
-    assert character[2] == 'CONSONANT'
-    assert character[3] == 'na'
+    # Retrieve the character from the database
+    result = repo.get_character(1)
+
+    # Verify that the retrieved character matches the inserted character
+    assert result == {
+        'id': 1,
+        'symbol': 'अ',
+        'name': 'A',
+        'type': 'Vowel',
+        'pronunciation': 'a'
+    }
 
 
 def test_get_nonexistent_character(repo):
-    # Try retrieving a character that does not exist
-    character = repo.get_character('अ')
+    # Try to retrieve a character that doesn't exist
+    result = repo.get_character(999)  # Assuming this ID does not exist
 
-    # Ensure that it does not return None or incorrect data
-    assert character is not None
-    assert character[1] == 'A'
-    assert character[2] == 'VOWEL'
-    assert character[3] == 'a'
+    # Verify that the result is None
+    assert result is None
+

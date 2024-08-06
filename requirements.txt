@@ -1,2 +1,5 @@
 pytest
 mysql-connector
+pymysql
+cryptography
+beautifulsoup4

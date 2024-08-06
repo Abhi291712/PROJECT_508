@@ -1,12 +1,42 @@
+# see https://docs.travis-ci.com/user/docker/
 services: docker
 
 before_install:
+  # print docker version
   - docker -v
+  # Disable services enabled by default
+  # http://docs.travis-ci.com/user/database-setup/#MySQL
   - sudo /etc/init.d/mysql stop
   - sudo /etc/init.d/postgresql stop
 
-install:
-  - docker build -f Dockerfile -t ling-508/devnagri:latest .
+before_script:
+  - docker-compose up -d --build
+  - sleep 10
 
 script:
-  - docker run -it ling-508/devnagri:latest python -m pytest tests
+  # Run tests
+  - docker-compose exec app python -m pytest tests
+
+after_script:
+  - docker-compose down
+# see https://docs.travis-ci.com/user/docker/
+services: docker
+
+before_install:
+  # print docker version
+  - docker -v
+  # Disable services enabled by default
+  # http://docs.travis-ci.com/user/database-setup/#MySQL
+  - sudo /etc/init.d/mysql stop
+  - sudo /etc/init.d/postgresql stop
+
+before_script:
+  - docker-compose up -d --build
+  - sleep 10
+
+script:
+  # Run tests
+  - docker-compose exec app python -m pytest tests
+
+after_script:
+  - docker-compose down
