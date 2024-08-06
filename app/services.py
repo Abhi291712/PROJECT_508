@@ -3,10 +3,9 @@ from db.mysql_repository import MySQLRepository
 from model.character_identifier import CharacterIdentifier
 from model.word_transliterator import WordTransliterator
 
-
 class Services:
     def __init__(self):
-        self.repo = MysqlRepository()
+        self.repo = MySQLRepository()
         self.character_identifier = CharacterIdentifier()
         self.word_transliterator = WordTransliterator()
 
@@ -33,15 +32,13 @@ class Services:
         else:
             return "Error: Input contains non-Devanagari characters"
 
-
 # Example usage
 if __name__ == "__main__":
     services = Services()
 
     # Example usage for character identification
     character_info = services.get_character_info('अ')
-    print(
-        character_info)  # Output: {'iconic_symbol': 'अ', 'name': 'a', 'type': 'Vowel', 'pronunciation': '/a/ ('a' in 'about')'}
+    print(character_info)  # Output: {'iconic_symbol': 'अ', 'name': 'a', 'type': 'Vowel', 'pronunciation': '/a/ ('a' in 'about')'}
 
     # Example usage for word transliteration
     transliterated_word = services.transliterate_word('नमस्ते')
