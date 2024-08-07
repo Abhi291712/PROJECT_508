@@ -7,10 +7,11 @@ class MysqlRepository(Repository):
     def __init__(self, host: str, user: str, password: str, database: str):
         super().__init__()
         config = {
-            'user': user,
-            'password': password,
-            'host': host,
-            'database': database
+            'user': 'root',
+            'password': 'sakila',
+            'host': 'mysql',  # When you run this on your machine change it to 'localhost'
+            'port': '3306',  # When you run this on your machine change it to '32000'
+            'database': 'devanagari'
         }
         self.connection = mysql.connector.connect(**config)
         self.cursor = self.connection.cursor(dictionary=True)
