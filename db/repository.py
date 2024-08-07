@@ -3,6 +3,7 @@ from typing import List, Optional
 from model.lexical_entry import LexicalEntry
 
 class Repository(ABC):
+
     @abstractmethod
     def get_character(self, symbol: str) -> Optional[LexicalEntry]:
         pass

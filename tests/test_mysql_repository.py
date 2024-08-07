@@ -1,17 +1,17 @@
 import os
 import pytest
-from db.mysql_repository import MySQLRepository
-from model import LexicalEntry, CharacterType
+from model.lexical_entry import LexicalEntry, CharacterType
+from db.mysql_repository import MysqlRepository
 
 @pytest.fixture
 def repo():
     host = os.getenv('DB_HOST', '127.0.0.1')
     user = os.getenv('DB_USER', 'root')
     password = os.getenv('DB_PASSWORD', 'root')
-    database = os.getenv('DB_NAME', 'devanagari')  # Changed to 'devanagari'
-    
-    with MySQLRepository(host=host, user=user, password=password, database=database) as repo:
-        yield repo
+    database = os.getenv('DB_NAME', 'devanagari')
+
+    with MysqlRepository(host=host, user=user, password=password, database=database) as repository:
+        yield repository
 
 def test_add_and_get_character(repo):
     # Define a character to insert into the database
@@ -19,8 +19,7 @@ def test_add_and_get_character(repo):
         symbol='अ',
         name='A',
         type=CharacterType.VOWEL,
-        pronunciation='a',
-        translation=''  # Adjust as needed
+        pronunciation='a'
     )
 
     # Add the character to the database
