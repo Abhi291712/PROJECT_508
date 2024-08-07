@@ -1,8 +1,8 @@
+# tests/test_services.py
 import pytest
 from app.services import Services
 from db.mysql_repository import MySQLRepository
 import os
-
 
 @pytest.fixture
 def services():
@@ -14,7 +14,6 @@ def services():
     repo = MySQLRepository(host=host, user=user, password=password, database=database)
     return Services(repo)
 
-
 def test_get_character_info(services):
     result = services.get_character_info('अ')
     expected = {
@@ -25,11 +24,9 @@ def test_get_character_info(services):
     }
     assert result == expected
 
-
 def test_transliterate_word(services):
     result = services.transliterate_word('नमस्ते')
     assert result == 'namaste'
-
 
 def test_transliterate_word_invalid(services):
     result = services.transliterate_word('hello')
