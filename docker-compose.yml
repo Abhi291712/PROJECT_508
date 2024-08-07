@@ -13,6 +13,5 @@ services:
       - "32000:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: devanagari  # Add the database name
     volumes:
       - ./data:/docker-entrypoint-initdb.d/:ro
