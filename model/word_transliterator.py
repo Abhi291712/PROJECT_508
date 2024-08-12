@@ -1,5 +1,6 @@
 from typing import Dict, Optional
 
+
 class WordTransliterator:
     def __init__(self):
         self.transliteration_map: Dict[str, str] = {
@@ -18,7 +19,7 @@ class WordTransliterator:
             "ऐ": "ai",
             "ओ": "o",
             "औ": "au",
-            
+
             # Consonants
             "क": "ka",
             "ख": "kha",
@@ -54,12 +55,12 @@ class WordTransliterator:
             "ळ": "ḷa",
             "क्ष": "kṣa",
             "ज्ञ": "jñā",
-            
+
             # Special Characters
             "ं": "ṃ",  # Anusvara
             "ः": "ḥ",  # Visarga
             "।": ".",  # Danda (punctuation)
-            "॥": "||", # Double Danda (punctuation)
+            "॥": "||",  # Double Danda (punctuation)
 
             # Additional characters
             "अँ": "aṅ",
@@ -68,6 +69,8 @@ class WordTransliterator:
         }
 
     def transliterate(self, word: str) -> Optional[str]:
+        if not word:  # Check if the input word is empty
+            return None
         if not all(char in self.transliteration_map for char in word):
             return None
         return ''.join(self.transliteration_map.get(char, char) for char in word)
