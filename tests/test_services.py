@@ -1,7 +1,6 @@
-# tests/test_services.py
 import pytest
 from app.services import Services
-from db.mysql_repository import MySQLRepository
+from db.mysql_repository import MysqlRepository
 import os
 
 @pytest.fixture
@@ -11,7 +10,7 @@ def services():
     password = os.getenv('DB_PASSWORD', 'root')
     database = os.getenv('DB_NAME', 'devanagari')
 
-    repo = MySQLRepository(host=host, user=user, password=password, database=database)
+    repo = MysqlRepository(host=host, user=user, password=password, database=database)
     return Services(repo)
 
 def test_get_character_info(services):
@@ -31,3 +30,12 @@ def test_transliterate_word(services):
 def test_transliterate_word_invalid(services):
     result = services.transliterate_word('hello')
     assert result == "Error: Input contains non-Devanagari characters"
+
+def test_get_nonexistent_character_info(services):
+    result = services.get_character_info('nonexistent')
+    expected = {"error": "Character not found"}
+    assert result == expected
+
+def test_transliterate_empty_word(services):
+    result = services.transliterate_word('')
+    assert result == "Error: Input is empty"

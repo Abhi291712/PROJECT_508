@@ -3,3 +3,6 @@ mysql-connector
 pymysql
 cryptography
 beautifulsoup4
+Flask
+httpie
+flask-cors

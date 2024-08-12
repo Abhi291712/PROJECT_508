@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sanskrit Bot API</title>
+</head>
+<body>
+<h1>Welcome to the Sanskrit Bot API</h1>
+<h2>Methods</h2>
+
+<h3>Identify a Character</h3>
+<div>
+<p>Endpoint: http://localhost:5000/identify</p>
+<p>Request type: POST</p>
+<p>Request body: JSON with field "character", e.g. </p>
+<pre>
+  {
+    "character": "अ"
+  }
+</pre>
+<p>Response: JSON with character details, e.g. </p>
+<pre>
+  {
+    "Character Symbol": "अ",
+    "Name": "a",
+    "Type": "Vowel",
+    "Pronunciation": "/a/ (like 'a' in 'about')"
+  }
+</pre>
+<p>Exceptions: If the character is not recognized, the system returns a "Character not found" message.</p>
+</div>
+
+<h3>Transliterate a Word</h3>
+<div>
+<p>Endpoint: http://localhost:5000/transliterate</p>
+<p>Request type: POST</p>
+<p>Request body: JSON with field "word", e.g. </p>
+<pre>
+  {
+    "word": "नमस्ते"
+  }
+</pre>
+<p>Response: JSON with transliterated word, e.g. </p>
+<pre>
+  {
+    "transliterated_word": "namaste"
+  }
+</pre>
+<p>Exceptions: If the input contains non-Devanagari characters, the system returns an error message.</p>
+</div>
+
+</body>
+</html>
