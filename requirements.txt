@@ -1,8 +1,8 @@
 pytest
-mysql-connector
+mysql-connector-python==8.0.26
 pymysql
 cryptography
 beautifulsoup4
 Flask
-httpie
-flask-cors
+Flask-CORS
+debugpy

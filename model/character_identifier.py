@@ -1,5 +1,3 @@
-# model/character_identifier.py
-
 class CharacterIdentifier:
     def __init__(self):
         self.characters = {
@@ -23,13 +21,11 @@ class CharacterIdentifier:
             "ज": {"name": "ja", "type": "Consonant", "pronunciation": "/dʒə/ ('j' in 'judge')"},
             "झ": {"name": "jha", "type": "Consonant", "pronunciation": "/dʒʰə/ (aspirated 'j' in 'jhā')"},
             "ञ": {"name": "ña", "type": "Consonant", "pronunciation": "/ɲə/ ('ny' in 'canyon')"},
-            # Add more consonants and vowels as needed
             "ट": {"name": "ṭa", "type": "Consonant", "pronunciation": "/ʈə/ (retroflex 't' in 'ṭaka')"},
             "ठ": {"name": "ṭha", "type": "Consonant", "pronunciation": "/ʈʰə/ (aspirated retroflex 'ṭha')"},
             "ड": {"name": "ḍa", "type": "Consonant", "pronunciation": "/ɖə/ (retroflex 'd' in 'ḍaka')"},
             "ढ": {"name": "ḍha", "type": "Consonant", "pronunciation": "/ɖʰə/ (aspirated retroflex 'ḍha')"},
             "ण": {"name": "ṇa", "type": "Consonant", "pronunciation": "/ɳə/ ('ṇ' in 'ḍaṇḍa')"},
-            # Add more characters...
         }
 
     def identify_character(self, symbol: str):

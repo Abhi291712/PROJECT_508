@@ -1,19 +1,26 @@
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import Optional
 from model.lexical_entry import LexicalEntry
 
 class Repository(ABC):
+    @abstractmethod
+    def add_character(self, entry: LexicalEntry) -> None:
+        pass
 
     @abstractmethod
     def get_character(self, symbol: str) -> Optional[LexicalEntry]:
         pass
 
     @abstractmethod
-    def get_all_characters(self) -> List[LexicalEntry]:
+    def update_character(self, entry: LexicalEntry) -> None:
         pass
 
     @abstractmethod
-    def add_character(self, entry: LexicalEntry) -> None:
+    def delete_character(self, symbol: str) -> None:
+        pass
+
+    @abstractmethod
+    def add_word_transliteration(self, word: str, transliteration: str) -> None:
         pass
 
     @abstractmethod
@@ -21,5 +28,5 @@ class Repository(ABC):
         pass
 
     @abstractmethod
-    def add_word_transliteration(self, word: str, transliteration: str) -> None:
+    def get_all_characters(self) -> list:
         pass

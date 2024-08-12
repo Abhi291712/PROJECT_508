@@ -2,79 +2,93 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sanskrit Bot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devanagari Translator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 200px;
+            padding: 5px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #identifyResult, #transliterateResult {
+            margin-top: 20px;
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            padding: 10px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
 </head>
 <body>
+    <h1>Devanagari Translator</h1>
 
-<h1>Sanskrit Bot</h1>
+    <h2>Identify Character</h2>
+    <form id="identifyForm">
+        <input type="text" id="identifyChar" placeholder="Enter a Devanagari character" maxlength="1">
+        <button type="submit">Identify</button>
+    </form>
+    <div id="identifyResult"></div>
 
-<h2>Identify a Character</h2>
+    <h2>Transliterate Word</h2>
+    <form id="transliterateForm">
+        <input type="text" id="transliterateWord" placeholder="Enter a Devanagari word">
+        <button type="submit">Transliterate</button>
+    </form>
+    <div id="transliterateResult"></div>
 
-<form id="form1">
-    <div class="input-group">
-        <label for="character">Character: </label>
-        <input id="character" name="character" type="text"/>
-    </div>
-    <button type="submit" value="identify">Submit</button>
-</form>
+    <script>
+        document.getElementById('identifyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const character = document.getElementById('identifyChar').value;
+            const response = await fetch('/identify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ character }),
+            });
+            const data = await response.json();
+            document.getElementById('identifyResult').textContent = JSON.stringify(data, null, 2);
+        });
 
-<h2>Response: </h2>
-<pre id="response"></pre>
-
-<h2>Transliterate a Word</h2>
-
-<form id="form2">
-    <div class="input-group">
-        <label for="word">Word: </label>
-        <input id="word" name="word" type="text"/>
-    </div>
-    <button type="submit" value="transliterate">Submit</button>
-</form>
-
-<h2>Response: </h2>
-<pre id="transliterated"></pre>
-
-<script>
-async function handleSubmit1(event) {
-    event.preventDefault();
-
-    const data = new FormData(event.target);
-    const value = Object.fromEntries(data.entries());
-    value.character = data.get("character");
-
-    const response = await fetch('http://localhost:5000/identify', {
-        method: 'POST',
-        body: JSON.stringify(value),
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    });
-    const result = await response.json();
-    document.getElementById('response').textContent = JSON.stringify(result, undefined, 2);
-}
-
-document.getElementById("form1").addEventListener("submit", handleSubmit1);
-
-async function handleSubmit2(event) {
-    event.preventDefault();
-
-    const data = new FormData(event.target);
-    const value = Object.fromEntries(data.entries());
-    value.word = data.get("word");
-
-    const response = await fetch('http://localhost:5000/transliterate', {
-        method: 'POST',
-        body: JSON.stringify(value),
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    });
-    const result = await response.json();
-    document.getElementById('transliterated').textContent = JSON.stringify(result, undefined, 2);
-}
-
-document.getElementById("form2").addEventListener("submit", handleSubmit2);
-</script>
-
+        document.getElementById('transliterateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const word = document.getElementById('transliterateWord').value;
+            const response = await fetch('/transliterate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ word }),
+            });
+            const data = await response.json();
+            document.getElementById('transliterateResult').textContent = JSON.stringify(data, null, 2);
+        });
+    </script>
 </body>
 </html>

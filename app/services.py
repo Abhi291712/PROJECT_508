@@ -1,4 +1,3 @@
-# app/services.py
 from db.repository import Repository
 from model.character_identifier import CharacterIdentifier
 from model.word_transliterator import WordTransliterator
@@ -16,6 +15,7 @@ class Services:
         return {"error": "Character not found"}
 
     def transliterate_word(self, word: str):
-        if not all(char in self.word_transliterator.transliteration_map for char in word):
-            return "Error: Input contains non-Devanagari characters"
+        transliteration = self.repo.get_word_transliteration(word)
+        if transliteration:
+            return transliteration
         return self.word_transliterator.transliterate(word)

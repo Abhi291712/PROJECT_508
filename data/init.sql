@@ -1,11 +1,23 @@
-CREATE DATABASE devanagari;
+-- Create the main database
+CREATE DATABASE IF NOT EXISTS devanagari;
 ALTER DATABASE devanagari CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+-- Create the test database
+CREATE DATABASE IF NOT EXISTS test_devanagari;
+ALTER DATABASE test_devanagari CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+-- Create test user and grant privileges
+CREATE USER IF NOT EXISTS 'test_user'@'%' IDENTIFIED BY 'test_password';
+GRANT ALL PRIVILEGES ON test_devanagari.* TO 'test_user'@'%';
+FLUSH PRIVILEGES;
+
+-- Use the main database for the following operations
 USE devanagari;
 
 -- Create a table for Devanagari characters
-CREATE TABLE devanagari_characters (
+CREATE TABLE IF NOT EXISTS devanagari_characters (
     id INT NOT NULL AUTO_INCREMENT,
-    character VARCHAR(10) NOT NULL,
+    `character` VARCHAR(10) NOT NULL,
     name VARCHAR(50),
     type VARCHAR(20),
     PRIMARY KEY (id)
@@ -50,7 +62,7 @@ VALUES
     ('ह', 'Ha', 'Consonant');
 
 -- Create a table for words
-CREATE TABLE words (
+CREATE TABLE IF NOT EXISTS words (
     id INT NOT NULL AUTO_INCREMENT,
     devanagari_word NVARCHAR(100) NOT NULL,
     latin_transliteration VARCHAR(100),
@@ -70,3 +82,22 @@ VALUES
     ('योग', 'Yoga'),
     ('सत्य', 'Satya'),
     ('अद्वितीय', 'Advitiya');
+
+-- Now set up the test database
+USE test_devanagari;
+
+-- Create the same tables in the test database
+CREATE TABLE IF NOT EXISTS devanagari_characters (
+    id INT NOT NULL AUTO_INCREMENT,
+    `character` VARCHAR(10) NOT NULL,
+    name VARCHAR(50),
+    type VARCHAR(20),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS words (
+    id INT NOT NULL AUTO_INCREMENT,
+    devanagari_word NVARCHAR(100) NOT NULL,
+    latin_transliteration VARCHAR(100),
+    PRIMARY KEY (id)
+);

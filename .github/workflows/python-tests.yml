@@ -40,6 +40,4 @@ jobs:
        DB_HOST: 127.0.0.1  # Use 127.0.0.1 instead of 'mysql'
        DB_USER: root
        DB_PASSWORD: root
-       DB_NAME: devanagari  # Make sure this matches
-      run: |
-       pytest
+       DB_NAME: devanagari

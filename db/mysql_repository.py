@@ -1,20 +1,34 @@
+import logging
 import mysql.connector
 from typing import Optional
 from model.lexical_entry import LexicalEntry, CharacterType
 from db.repository import Repository
 
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 class MysqlRepository(Repository):
     def __init__(self, host: str, user: str, password: str, database: str):
         super().__init__()
+        self.host = host
+        self.user = user
+        self.password = password
+        self.database = database
         config = {
-            'user': 'root',
-            'password': 'sakila',
-            'host': 'mysql',  # When you run this on your machine change it to 'localhost'
-            'port': '3306',  # When you run this on your machine change it to '32000'
-            'database': 'devanagari'
+            'user': self.user,
+            'password': self.password,
+            'host': self.host,
+            'port': '3306',
+            'database': self.database
         }
-        self.connection = mysql.connector.connect(**config)
-        self.cursor = self.connection.cursor(dictionary=True)
+        logger.debug(f"Attempting to connect to MySQL: host={host}, user={user}, database={database}")
+        try:
+            self.connection = mysql.connector.connect(**config)
+            logger.debug("Successfully connected to MySQL")
+            self.cursor = self.connection.cursor(dictionary=True)
+        except mysql.connector.Error as err:
+            logger.error(f"Error connecting to MySQL: {err}")
+            raise
 
     def __enter__(self):
         return self
@@ -44,9 +58,27 @@ class MysqlRepository(Repository):
                 symbol=result['character'],
                 name=result['name'],
                 type=CharacterType[result['type']],
-                pronunciation=''  # Adjust as necessary
+                pronunciation=''  # Assuming pronunciation is not stored in the database
             )
         return None
+
+    def update_character(self, entry: LexicalEntry) -> None:
+        query = """
+        UPDATE devanagari_characters
+        SET name = %s, type = %s
+        WHERE character = %s
+        """
+        self.cursor.execute(query, (
+            entry.name,
+            entry.type.name,
+            entry.symbol
+        ))
+        self.connection.commit()
+
+    def delete_character(self, symbol: str) -> None:
+        query = "DELETE FROM devanagari_characters WHERE character = %s"
+        self.cursor.execute(query, (symbol,))
+        self.connection.commit()
 
     def add_word_transliteration(self, word: str, transliteration: str) -> None:
         query = """
@@ -72,5 +104,5 @@ class MysqlRepository(Repository):
             symbol=row['character'],
             name=row['name'],
             type=CharacterType[row['type']],
-            pronunciation=''
+            pronunciation=''  # Assuming pronunciation is not stored in the database
         ) for row in results]

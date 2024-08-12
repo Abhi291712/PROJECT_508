@@ -2,52 +2,86 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sanskrit Bot API</title>
+    <title> Bot</title>
 </head>
 <body>
-<h1>Welcome to the Sanskrit Bot API</h1>
-<h2>Methods</h2>
 
-<h3>Identify a Character</h3>
-<div>
-<p>Endpoint: http://localhost:5000/identify</p>
-<p>Request type: POST</p>
-<p>Request body: JSON with field "character", e.g. </p>
-<pre>
-  {
-    "character": "अ"
-  }
-</pre>
-<p>Response: JSON with character details, e.g. </p>
-<pre>
-  {
-    "Character Symbol": "अ",
-    "Name": "a",
-    "Type": "Vowel",
-    "Pronunciation": "/a/ (like 'a' in 'about')"
-  }
-</pre>
-<p>Exceptions: If the character is not recognized, the system returns a "Character not found" message.</p>
-</div>
+<h1>Sanskrit Bot</h1>
 
-<h3>Transliterate a Word</h3>
-<div>
-<p>Endpoint: http://localhost:5000/transliterate</p>
-<p>Request type: POST</p>
-<p>Request body: JSON with field "word", e.g. </p>
-<pre>
-  {
-    "word": "नमस्ते"
-  }
-</pre>
-<p>Response: JSON with transliterated word, e.g. </p>
-<pre>
-  {
-    "transliterated_word": "namaste"
-  }
-</pre>
-<p>Exceptions: If the input contains non-Devanagari characters, the system returns an error message.</p>
-</div>
+<h2>Character Identification</h2>
+<form id="charForm">
+    <div class="input-group">
+        <label for="character">Character: </label>
+        <input id="character" name="character" type="text" maxlength="1"/>
+    </div>
+    <button type="submit">Identify</button>
+</form>
+
+<h2>Character Information: </h2>
+<pre id="charResponse"></pre>
+
+<h2>Word Transliteration</h2>
+<form id="wordForm">
+    <div class="input-group">
+        <label for="word">Word: </label>
+        <input id="word" name="word" type="text"/>
+    </div>
+    <button type="submit">Transliterate</button>
+</form>
+
+<h2>Transliterated Word: </h2>
+<pre id="wordResponse"></pre>
+
+<script>
+async function handleCharSubmit(event) {
+    event.preventDefault();
+
+    const data = new FormData(event.target);
+    const value = Object.fromEntries(data.entries());
+    value.character = data.get("character");
+
+    const response = await fetch('http://localhost:5000/identify', {
+        method: 'POST',
+        body: JSON.stringify(value),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    if (response.ok) {
+        const myJson = await response.json();
+        document.getElementById('charResponse').textContent = JSON.stringify(myJson, undefined, 2);
+    } else {
+        document.getElementById('charResponse').textContent = 'Character not found';
+    }
+}
+
+async function handleWordSubmit(event) {
+    event.preventDefault();
+
+    const data = new FormData(event.target);
+    const value = Object.fromEntries(data.entries());
+    value.word = data.get("word");
+
+    const response = await fetch('http://localhost:5000/transliterate', {
+        method: 'POST',
+        body: JSON.stringify(value),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    if (response.ok) {
+        const myJson = await response.json();
+        document.getElementById('wordResponse').textContent = JSON.stringify(myJson.transliterated_word, undefined, 2);
+    } else {
+        document.getElementById('wordResponse').textContent = 'Error with input or non-Devanagari characters detected';
+    }
+}
+
+document.getElementById("charForm").addEventListener("submit", handleCharSubmit);
+document.getElementById("wordForm").addEventListener("submit", handleWordSubmit);
+</script>
 
 </body>
 </html>
