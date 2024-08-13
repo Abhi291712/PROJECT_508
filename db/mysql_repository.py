@@ -8,20 +8,21 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 class MysqlRepository(Repository):
-    def __init__(self, host: str, user: str, password: str, database: str):
+    def __init__(self, host: str, user: str, password: str, database: str, port: int = 3306):
         super().__init__()
         self.host = host
         self.user = user
         self.password = password
         self.database = database
+        self.port = port
         config = {
             'user': self.user,
             'password': self.password,
             'host': self.host,
-            'port': '3306',
+            'port': self.port,
             'database': self.database
         }
-        logger.debug(f"Attempting to connect to MySQL: host={host}, user={user}, database={database}")
+        logger.debug(f"Attempting to connect to MySQL: host={host}, user={user}, database={database}, port={port}")
         try:
             self.connection = mysql.connector.connect(**config)
             logger.debug("Successfully connected to MySQL")

@@ -7,10 +7,10 @@ import os
 def services():
     host = os.getenv('DB_HOST', '127.0.0.1')
     user = os.getenv('DB_USER', 'root')
-    password = os.getenv('DB_PASSWORD', 'root')
-    database = os.getenv('DB_NAME', 'devanagari')
-
-    repo = MysqlRepository(host=host, user=user, password=password, database=database)
+    password = os.getenv('DB_PASSWORD', 'rootpassword')
+    database = os.getenv('DB_NAME', 'test_devanagari')
+    port = int(os.getenv('DB_PORT', '3306'))
+    repo = MysqlRepository(host=host, user=user, password=password, database=database, port=port)
     return Services(repo)
 
 def test_get_character_info(services):
