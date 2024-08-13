@@ -17,6 +17,7 @@ POST /identify
 
 ### Response Format
 {
+
   "symbol": "अ",
   "name": "a",
   "type": "Vowel",
@@ -79,3 +80,4 @@ Example error response:
 ## Notes
 
 - Ensure that your requests use UTF-8 encoding to properly handle Devanagari characters.
+
