@@ -1,51 +1,81 @@
-# API Documentation
+# Devanagari Translator API
 
-## Overview
-The Devanagari Script Analyzer API provides functionality for transliterating words from Devanagari script to Latin script. It is built using Flask and allows for simple POST requests to achieve the transliteration.
+This API provides two main functionalities: identifying Devanagari characters and transliterating Devanagari words to Latin script.
 
-## Endpoints
+## 1. Identify Devanagari Character
 
-### `/transliterate`
+### Description
+This endpoint identifies a single Devanagari character and provides information about it.
 
-- **URL**: `/transliterate`
-- **Method**: POST
-- **Description**: Transliterates a word from Devanagari script to Latin script.
-- **Parameters**: None
-- **Request Body**:
-  - **Content-Type**: application/json
-  - **Body Example**:
-    ```json
-    {
-      "word": "नमस्ते"
-    }
-    ```
-- **Response**:
-  - **Success**:
-    - **Status Code**: 200 OK
-    - **Body Example**:
-      ```json
-      {
-        "transliterated_word": "namaste"
-      }
-      ```
-  - **Error**:
-    - **Status Code**: 400 Bad Request (for invalid input)
-    - **Body Example**:
-      ```json
-      {
-        "error": "Invalid input"
-      }
-      ```
-- **Examples**:
-  - **Request Example**:
-    ```bash
-    curl -X POST "http://localhost:5000/transliterate" -H "Content-Type: application/json" -d '{"word":"नमस्ते"}'
-    ```
-  - **Response Example**:
-    ```json
-    {
-      "transliterated_word": "namaste"
-    }
-    ```
+### Endpoint
+POST /identify
 
+### Request Format
+{
+  "character": "अ"
+}
 
+### Response Format
+{
+  "symbol": "अ",
+  "name": "a",
+  "type": "Vowel",
+  "pronunciation": "/a/ (like 'a' in 'about')"
+}
+
+### Example cURL Command
+curl -X POST "http://localhost:5000/identify" \
+     -H "Content-Type: application/json" \
+     -d '{"character":"अ"}'
+
+### Example Python Request
+import requests
+
+url = "http://localhost:5000/identify"
+data = {"character": "अ"}
+response = requests.post(url, json=data)
+print(response.json())
+
+## 2. Transliterate Devanagari Word
+
+### Description
+This endpoint transliterates a Devanagari word to Latin script.
+
+### Endpoint
+POST /transliterate
+
+### Request Format
+{
+  "word": "नमस्ते"
+}
+
+### Response Format
+{
+  "transliterated_word": "namaste"
+}
+
+### Example cURL Command
+curl -X POST "http://localhost:5000/transliterate" \
+     -H "Content-Type: application/json" \
+     -d '{"word":"नमस्ते"}'
+
+### Example Python Request
+import requests
+
+url = "http://localhost:5000/transliterate"
+data = {"word": "नमस्ते"}
+response = requests.post(url, json=data)
+print(response.json())
+
+## Error Handling
+
+If an error occurs, the API will return a JSON object with an "error" key describing the issue.
+
+Example error response:
+{
+  "error": "Invalid input: character not found"
+}
+
+## Notes
+
+- Ensure that your requests use UTF-8 encoding to properly handle Devanagari characters.
