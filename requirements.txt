@@ -1,8 +1,4 @@
-pytest
+Flask==2.0.1
+Flask-CORS==3.0.10
 mysql-connector-python==8.0.26
-pymysql
-cryptography
-beautifulsoup4
-Flask
-Flask-CORS
-debugpy
+pytest==6.2.5

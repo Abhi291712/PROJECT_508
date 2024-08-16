@@ -62,10 +62,12 @@
     <div id="transliterateResult"></div>
 
     <script>
+        const API_URL = 'http://localhost:5000';
+
         document.getElementById('identifyForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const character = document.getElementById('identifyChar').value;
-            const response = await fetch('/identify', {
+            const response = await fetch(`${API_URL}/identify`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -79,7 +81,7 @@
         document.getElementById('transliterateForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const word = document.getElementById('transliterateWord').value;
-            const response = await fetch('/transliterate', {
+            const response = await fetch(`${API_URL}/transliterate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -1,32 +1,25 @@
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Optional, List
 from model.lexical_entry import LexicalEntry
+from model.word import Word
 
 class Repository(ABC):
-    @abstractmethod
-    def add_character(self, entry: LexicalEntry) -> None:
-        pass
-
     @abstractmethod
     def get_character(self, symbol: str) -> Optional[LexicalEntry]:
         pass
 
     @abstractmethod
-    def update_character(self, entry: LexicalEntry) -> None:
+    def get_all_characters(self) -> List[LexicalEntry]:
         pass
 
     @abstractmethod
-    def delete_character(self, symbol: str) -> None:
+    def add_character(self, entry: LexicalEntry) -> None:
         pass
 
     @abstractmethod
-    def add_word_transliteration(self, word: str, transliteration: str) -> None:
+    def get_word(self, word_form: str) -> Optional[Word]:
         pass
 
     @abstractmethod
-    def get_word_transliteration(self, word: str) -> Optional[str]:
-        pass
-
-    @abstractmethod
-    def get_all_characters(self) -> list:
+    def add_word(self, word: Word) -> None:
         pass
