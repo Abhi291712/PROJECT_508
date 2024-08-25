@@ -1,15 +1,12 @@
 name: Python application test
-
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     services:
       mysql:
         image: mysql:5.7
@@ -19,7 +16,6 @@ jobs:
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.8
@@ -36,6 +32,7 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
+      if: github.event_name == 'pull_request'
       env:
         DB_HOST: 127.0.0.1
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
